@@ -30,7 +30,9 @@ router.put("/follow", requireLogin, (req, res) => {
   User.findByIdAndUpdate(
     req.body.followId,
     {
-      $push: { followers: req.user._id }
+      $push: { 
+        followers: req.user._id
+      }
     },
     {
       new: true
@@ -42,7 +44,10 @@ router.put("/follow", requireLogin, (req, res) => {
       User.findByIdAndUpdate(
         req.user._id,
         {
-          $push: { following: req.body.followId }
+          $push: { 
+            following: req.body.followId,
+            followingNames: req.body.followName, 
+          }
         },
         { new: true }
       )
@@ -58,6 +63,7 @@ router.put("/follow", requireLogin, (req, res) => {
 });
 
 router.put("/unfollow", requireLogin, (req, res) => {
+  console.log("FUCK REACT >>> "+ req.body.unfollowId + req.body.unfollowName)
   User.findByIdAndUpdate(
     req.body.unfollowId,
     {
@@ -73,9 +79,12 @@ router.put("/unfollow", requireLogin, (req, res) => {
       User.findByIdAndUpdate(
         req.user._id,
         {
-          $pull: { following: req.body.unfollowId }
+          $pull: { 
+            following: req.body.unfollowId,
+            followingNames: req.body.unfollowName,
+          },
         },
-        { new: true }
+        { new: true },
       )
         .select("-password")
         .then(result => {

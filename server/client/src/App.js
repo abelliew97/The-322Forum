@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import NavBar from "./components/Navbar";
 import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
@@ -31,8 +30,8 @@ const Routing = () => {
   }, []);
 
   return (
-    <Switch>
-      <Route exact path="/">
+    <Switch style={{marginTop:"70px", paddingTop:"70px"}}>
+      <Route exact path="/" >
         <Home />
       </Route>
 
@@ -69,8 +68,10 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
-        <NavBar />
-        <Routing />
+        <NavBar/>
+        <div style={{paddingTop:"68px"}}>
+          <Routing/>
+        </div>
       </BrowserRouter>
     </UserContext.Provider>
   );

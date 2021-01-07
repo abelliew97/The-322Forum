@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../App";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import CreatePost from "./CreatePost";
+import Left from "../screenComponents/left.js"
+import Right from "../screenComponents/right.js"
+import M from "materialize-css";
+
 
 const Home = () => {
   const [data, setData] = useState([]);
   const { state, dispatch } = useContext(UserContext);
+
   useEffect(() => {
     fetch("/allpost", {
       headers: {
@@ -16,7 +22,7 @@ const Home = () => {
         console.log(result);
         setData(result.posts);
       });
-  }, []);
+      }, []);
 
   const likePost = id => {
     fetch("/like", {
@@ -60,7 +66,6 @@ const Home = () => {
     })
       .then(res => res.json())
       .then(result => {
-        //   console.log(result)
         const newData = data.map(item => {
           if (item._id == result._id) {
             return result;
@@ -121,12 +126,31 @@ const Home = () => {
       });
   };
 
+  
+
   return (
-    <div className="home">
+    <div className="grid-container" >
+      <Left/>
+
+      <div className="home" style={{
+        flexGrow:'1',
+        width:"70%",
+      }}>
+
+      
+      {
+        localStorage.getItem("type") == "admin"?
+        <CreatePost/>:<div/>
+      }
+
+      <h4 className="home-card">All posts</h4>    
+
       {data.map(item => {
         return (
           <div className="card home-card" key={item._id}>
-            <h5 style={{ padding: "5px" }}>
+            <h5 style={{ 
+              padding: "10px 10px 5px 10px"
+            }}>
               <Link
                 to={
                   item.postedBy._id !== state._id
@@ -158,32 +182,52 @@ const Home = () => {
             </div>
 
             <div className="card-content">
+              
+              {/* 
               <i className="material-icons" style={{ color: "#64b5f6" }}>
                 favorite
               </i>
-              {item.likes.includes(state._id) ? (
-                <i
-                  className="material-icons"
-                  onClick={() => {
-                    unlikePost(item._id);
-                  }}
-                >
-                  thumb_down
-                </i>
-              ) : (
-                <i
-                  className="material-icons"
-                  onClick={() => {
-                    likePost(item._id);
-                  }}
-                >
-                  thumb_up
-                </i>
-              )}
-
-              <h6>{item.likes.length} likes</h6>
-              <h6>{item.title}</h6>
+              */}
+              <h6 style={{
+                fontWeight:"bold",
+              }}>{item.title}</h6>
               <p>{item.body}</p>
+
+              <div style={{
+                display:"flex",
+                alignItems:"center",
+                marginTop:"10px"
+              }}> {/* Likes displayer */}
+                  {item.likes.includes(state._id) ? (
+                  <i
+                    className="material-icons"
+                    onClick={() => {
+                      unlikePost(item._id);
+                    }}
+                    style={{
+                      color:"#64b5f6",
+                    }}
+                  >
+                    thumb_up
+                  </i>
+                ) : (
+                  <i
+                    className="material-icons"
+                    onClick={() => {
+                      likePost(item._id);
+                    }}
+                  >
+                    thumb_up
+                  </i>
+                )}
+
+                <h6 style={{
+                margin:"0px 0px 0px 15px",
+              }}>{item.likes.length} likes</h6>
+
+              </div>
+              
+              
               {item.comments.map(record => {
                 return (
                   <h6 key={record._id}>
@@ -196,17 +240,25 @@ const Home = () => {
                 );
               })}
               <form
+                id="comment"
                 onSubmit={e => {
                   e.preventDefault();
                   makeComment(e.target[0].value, item._id);
+                  e.target[0].value = ""
+                  M.toast({ html: "Comment posted" });
                 }}
               >
-                <input type="text" placeholder="Add a comment" />
+                <input id="comment_input" type="text" placeholder="Add a comment" 
+                />
               </form>
             </div>
           </div>
         );
-      })}
+        })}
+      </div>
+    
+        <Right/>
+      
     </div>
   );
 };

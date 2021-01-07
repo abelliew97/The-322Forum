@@ -64,7 +64,7 @@ const Profile = () => {
   return (
     <>
       {state ? (
-        <div style={{ maxWidth: "550px", margin: "0px auto" }}>
+        <div style={{ maxWidth: "70%", margin: "0px auto" }}>
           <div
             style={{
               margin: "18px 0px",
@@ -78,14 +78,33 @@ const Profile = () => {
               }}
             >
               <div>
-                <img
-                  style={{
-                    width: "160px",
-                    height: "160px",
-                    borderRadius: "80px"
-                  }}
-                  src={state ? state.pic : "loading"}
-                />
+                <div className="file-field input-field" style={{ margin: "10px" }}>
+                <div >
+                  <div className="hvrbox">
+                    <img className="hvrbox-layer_bottom"
+                        style={{
+                          width: "160px",
+                          height: "160px",
+                          borderRadius: "80px"
+                        }}
+                        src={state ? state.pic : "loading"}
+                      />
+                    <div className="hvrbox-layer_top">
+                      <div className="hvrbox-text">
+                        Click to update
+                        <input
+                          type="file"
+                          onChange={e => updatePhoto(e.target.files[0])}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div className="file-path-wrapper" style={{visibility:"hidden"}}>{/*Hidden for now*/}
+                  <input className="file-path validate" type="text" />
+                </div>
+              </div>
               </div>
               <div>
                 <h4>{state ? state.name : "loading"}</h4>
@@ -104,31 +123,37 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="file-field input-field" style={{ margin: "10px" }}>
-              <div className="btn #64b5f6 blue darken-1">
-                <span>Update pic</span>
-                <input
-                  type="file"
-                  onChange={e => updatePhoto(e.target.files[0])}
-                />
-              </div>
-              <div className="file-path-wrapper">
-                <input className="file-path validate" type="text" />
-              </div>
-            </div>
           </div>
+
           <div className="gallery">
             {mypics.map(item => {
               return (
+                item.photo != "No photo"?
                 <img
                   key={item._id}
                   className="item"
                   src={item.photo}
                   alt={item.title}
-                />
+                  style={{
+                    maxWidth:"50%",
+                    margin:"10px 10px 10px 10px"
+                  }}
+                /> :
+                <div style={{
+                  maxWidth:"50%",
+                  margin:"10px 10px 10px 10px",
+                  display:"flex",
+                  alignItems:"center",
+                }}>
+                  <p style={{
+                    fontWeight:"bold"
+                  }}>{item.title}</p>
+
+                </div>
               );
             })}
           </div>
+
         </div>
       ) : (
         <h2>Loading....</h2>

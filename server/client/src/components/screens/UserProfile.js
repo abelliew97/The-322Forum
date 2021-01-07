@@ -30,7 +30,8 @@ const UserProfile = () => {
         Authorization: "Bearer " + localStorage.getItem("jwt")
       },
       body: JSON.stringify({
-        followId: userid
+        followId: userid,
+        followName: userProfile.user.name
       })
     })
       .then(res => res.json())
@@ -56,6 +57,11 @@ const UserProfile = () => {
         });
         setShowFollow(false);
       });
+
+      localStorage.setItem(
+        "followingNames", 
+        localStorage.getItem("followingNames") + userProfile.user.name
+      )
   };
 
   const unfollowUser = () => {
@@ -66,7 +72,8 @@ const UserProfile = () => {
         Authorization: "Bearer " + localStorage.getItem("jwt")
       },
       body: JSON.stringify({
-        unfollowId: userid
+        unfollowId: userid,
+        unfollowName: userProfile.user.name
       })
     })
       .then(res => res.json())
@@ -91,12 +98,21 @@ const UserProfile = () => {
         });
         setShowFollow(true);
       });
+
+    //Set local storage
+    localStorage.setItem(
+      "followingNames", 
+      localStorage.getItem("followingNames").replace([userProfile.user.name+","], "")
+    )
+    
+    //***********************MAY NEED TO REMOVE ID FROM USER OBJECT TOO IF NEEDED */
+    console.log(localStorage.getItem("followingNames").replace([userProfile.user.name+","], ""))
   };
 
   return (
     <>
       {userProfile ? (
-        <div style={{ maxWidth: "550px", margin: "0px auto" }}>
+        <div style={{ maxWidth: "80%", margin: "0px auto" }}>
           <div
             style={{
               display: "flex",
@@ -156,12 +172,26 @@ const UserProfile = () => {
           <div className="gallery">
             {userProfile.posts.map(item => {
               return (
+                item.photo != "No photo"?
                 <img
                   key={item._id}
                   className="item"
                   src={item.photo}
                   alt={item.title}
-                />
+                  style={{
+                    maxWidth:"50%",
+                    margin:"10px 10px 10px 10px"
+                  }}
+                /> :
+                <div style={{
+                  maxWidth:"50%",
+                  margin:"10px 10px 10px 10px",
+                  display:"flex",
+                  alignItems:"center",
+                }}>
+                  <p>{item.title}</p>
+
+                </div>
               );
             })}
           </div>

@@ -32,7 +32,15 @@ const Signin = ()=>{
                 //Store local data
                 localStorage.setItem("jwt", data.token) //JWT: Java web token
                 localStorage.setItem("user", JSON.stringify(data.user))
+                localStorage.setItem("type", data._type)
+
+                
+                localStorage.setItem("followingNames", data.followingNames)
+                
+                var sad = localStorage.getItem("followingNames").split(',')
+                localStorage.setItem("followingNames", sad)
                 dispatch({type:"USER", payload:data.user})
+
 
                 M.toast({html:"Signed in successfully!"})
                 history.push('/')
@@ -47,8 +55,15 @@ const Signin = ()=>{
     return(
         <div className="parentCard">
             <div className="card auth-card input-field">
-                <h2>USMForum</h2>
-
+                <img src="/images/USMForum.svg" style={{height:"300px"}}/>
+                
+                
+                {/* 
+                <h2 style={{
+                    fontFamily:"'Libre Baskerville', serif"
+                }}>USMForum</h2>
+                */}
+                
                 <input type="text" 
                 placeholder="email"
                 value={email}

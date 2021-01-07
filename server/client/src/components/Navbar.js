@@ -13,41 +13,61 @@ const NavBar = () => {
     M.Modal.init(searchModal.current);
   }, []);
 
+
   const renderList = () => {
     if (state) {
       //Signed in
       return [
         <li key="1">
-          <i
-            data-target="modal1"
-            className="large material-icons modal-trigger"
-            style={{ color: "black" }}
-          >
-            search
-          </i>
+          <div style={{
+            minWidth:"200px",
+            height:"50px",
+            border:"1px solid gray",
+            borderRadius:"20px",
+            //marginTop:"6px",
+            justifyContent:"center",
+            backgroundColor:"white",
+            margin:"6px 20px 0px 0px"
+          }}>
+            {/* Inner content of search bar */}
+            <div style={{
+              margin:"-7px 10px 5px 15px",
+              display:"grid",
+              maxWidth:"500px",
+              width:"30%",
+            }}>
+              <i data-target="modal1" style={{
+                display:"grid",
+                width:"100%",
+              }}>
+                <i
+                    data-target="modal1"
+                    className="large material-icons modal-trigger"
+                    style={{ color: "black", gridColumn:"1"}}
+                  >
+                    search
+                </i>
+
+                <p data-target="modal1"
+                  style={{
+                    gridColumn:'2',
+                    color:'gray',
+                    float:'left',
+                    verticalAlign:"middle",
+                    margin:"0",
+                    padding:"0",
+                    fontSize:"15px",
+                    fontStyle:"normal"
+                  }}>
+                    {localStorage.getItem("searchItem")}
+                </p>
+              </i>
+              
+            </div>
+          </div>
         </li>,
-        <li key="2">
-          <Link to="/profile">Profile</Link>
-        </li>,
-        <li key="3">
-          <Link to="/create">Post</Link>
-        </li>,
-        <li key="4">
-          <Link to="/followingPost">Following</Link>
-        </li>,
-        <li key="5">
-          <button
-            className="btn waves-effect waves-light #64b5f6 blue lighten-2"
-            onClick={() => {
-              localStorage.clear();
-              dispatch({ type: "CLEAR" });
-              history.push("/signin");
-              M.toast({ html: "Signed out." });
-            }}
-          >
-            Logout
-          </button>
-        </li>
+        
+        
       ];
     } else {
       //Not signed in, prompt signin/up
@@ -79,19 +99,41 @@ const NavBar = () => {
       });
   };
 
+  
+
+
   return (
-    <nav>
-      <div className="nav-wrapper white">
-        <Link to={state ? "/" : "/signin"} className="brand-logo left">
+    <nav style={{
+      position:"fixed",
+      zIndex:"100",
+      backgroundColor:"#64b5f6",
+      top:"0",
+      }}>
+      <div className="nav-wrapper "
+      >
+        <Link to={state ? "/" : "/signin"} className="brand-logo left" 
+        style={{
+          display:"block", 
+          margin:"auto 20px",
+          fontFamily:"'Libre Baskerville', serif"
+        }}>
           USMForum
+          {/*      USE IF WANT ICON IN TOP LEFT
+          <img src="/images/USMForum.svg" style={{height:"300px"}}/>
+*/}
         </Link>
-        <ul id="nav-mobile" className="right">
+
+        <ul id="nav-mobile" className="right" style={{
+          alignItems:"center"
+        }}>
           {renderList()}
         </ul>
+
       </div>
+
       <div
         id="modal1"
-        class="modal"
+        className="modal"
         ref={searchModal}
         style={{ color: "black" }}
       >
@@ -100,7 +142,10 @@ const NavBar = () => {
             type="text"
             placeholder="search users"
             value={search}
-            onChange={e => fetchUsers(e.target.value)}
+            onChange={e => {
+              fetchUsers(e.target.value)
+              localStorage.setItem("searchItem", e.target.value)
+            }}
           />
           <ul className="collection">
             {userDetails.map(item => {

@@ -19,7 +19,14 @@ const userSchema = new mongoose.Schema({
       "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Faenza-avatar-default-symbolic.svg/1200px-Faenza-avatar-default-symbolic.svg.png"
   },
   followers: [{ type: ObjectId, ref: "User" }],
-  following: [{ type: ObjectId, ref: "User" }]
+  following: [{ type: ObjectId, ref: "User" }],
+  _type:{
+    type: String,
+    required: true
+  },
+  followingNames:[{
+    type:String
+  }]
 });
 
 mongoose.model("User", userSchema);

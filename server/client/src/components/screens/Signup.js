@@ -80,7 +80,14 @@ const Signup = () => {
   return (
     <div className="parentCard">
       <div className="card auth-card input-field">
-        <h2>USMForum</h2>
+      <img src="/images/USMForum.svg" style={{height:"300px"}}/>
+                
+                
+                {/* 
+                <h2 style={{
+                    fontFamily:"'Libre Baskerville', serif"
+                }}>USMForum</h2>
+                */}
 
         <input
           type="text"
