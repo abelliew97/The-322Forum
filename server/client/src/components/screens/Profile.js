@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { UserContext } from "../../App";
 
 const Profile = () => {
-  const [mypics, setPics] = useState([]);
+  const [data, setData] = useState([]);
   const { state, dispatch } = useContext(UserContext);
   const [image, setImage] = useState("");
 
@@ -14,7 +14,8 @@ const Profile = () => {
     })
       .then(res => res.json())
       .then(result => {
-        setPics(result.mypost);
+        console.log(result);
+        setData(result.mypost);
       });
   }, []);
 
@@ -78,10 +79,14 @@ const Profile = () => {
               }}
             >
               <div>
-                <div className="file-field input-field" style={{ margin: "10px" }}>
-                <div >
-                  <div className="hvrbox">
-                    <img className="hvrbox-layer_bottom"
+                <div
+                  className="file-field input-field"
+                  style={{ margin: "10px" }}
+                >
+                  <div>
+                    <div className="hvrbox">
+                      <img
+                        className="hvrbox-layer_bottom"
                         style={{
                           width: "160px",
                           height: "160px",
@@ -89,22 +94,25 @@ const Profile = () => {
                         }}
                         src={state ? state.pic : "loading"}
                       />
-                    <div className="hvrbox-layer_top">
-                      <div className="hvrbox-text">
-                        Click to update
-                        <input
-                          type="file"
-                          onChange={e => updatePhoto(e.target.files[0])}
-                        />
+                      <div className="hvrbox-layer_top">
+                        <div className="hvrbox-text">
+                          Click to update
+                          <input
+                            type="file"
+                            onChange={e => updatePhoto(e.target.files[0])}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  
+                  <div
+                    className="file-path-wrapper"
+                    style={{ visibility: "hidden" }}
+                  >
+                    {/*Hidden for now*/}
+                    <input className="file-path validate" type="text" />
+                  </div>
                 </div>
-                <div className="file-path-wrapper" style={{visibility:"hidden"}}>{/*Hidden for now*/}
-                  <input className="file-path validate" type="text" />
-                </div>
-              </div>
               </div>
               <div>
                 <h4>{state ? state.name : "loading"}</h4>
@@ -116,48 +124,161 @@ const Profile = () => {
                     width: "108%"
                   }}
                 >
-                  <h6>{mypics.length} posts</h6>
+                  <h6>{data.length} posts</h6>
                   <h6>{state ? state.followers.length : "0"} followers</h6>
                   <h6>{state ? state.following.length : "0"} following</h6>
                 </div>
               </div>
             </div>
-
           </div>
-
-          <div className="gallery">
+          {console.log(data)}
+          {/* <div className="gallery">
             {mypics.map(item => {
-              return (
-                item.photo != "No photo"?
+              return item.photo != "No photo" ? (
                 <img
                   key={item._id}
                   className="item"
                   src={item.photo}
                   alt={item.title}
                   style={{
-                    maxWidth:"50%",
-                    margin:"10px 10px 10px 10px"
+                    maxWidth: "50%",
+                    margin: "10px 10px 10px 10px"
                   }}
-                /> :
-                <div style={{
-                  maxWidth:"50%",
-                  margin:"10px 10px 10px 10px",
-                  display:"flex",
-                  alignItems:"center",
-                }}>
-                  <p style={{
-                    fontWeight:"bold"
-                  }}>{item.title}</p>
-
+                />
+              ) : (
+                <div
+                  style={{
+                    maxWidth: "50%",
+                    margin: "10px 10px 10px 10px",
+                    display: "flex",
+                    alignItems: "center"
+                  }}
+                >
+                  <p
+                    style={{
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {item.title}
+                  </p>
                 </div>
               );
             })}
-          </div>
-
+          </div> */}
         </div>
       ) : (
         <h2>Loading....</h2>
       )}
+
+      {data &&
+        data.map(item => {
+          return (
+            <div className="card home-card" key={item._id}>
+              <h5
+                style={{
+                  padding: 24
+                }}
+              >
+                {/* <Link
+                to={
+                  item.postedBy._id !== state._id
+                    ? "/profile/" + item.postedBy._id
+                    : "/profile"
+                }
+              > */}
+                {item.postedBy.name}
+                {/* </Link>{" "} */}
+                {item.postedBy._id == state._id && (
+                  <i
+                    className="material-icons"
+                    style={{
+                      float: "right"
+                    }}
+                    // onClick={() => deletePost(item._id)}
+                  >
+                    delete
+                  </i>
+                )}
+              </h5>
+
+              <div className="card-image">
+                {item.photo != "" && item.photo != "No photo" ? (
+                  <img src={item.photo} />
+                ) : (
+                  <div style={{ marginTop: -20 }} />
+                )}
+              </div>
+
+              <div className="card-content">
+                {/* 
+              <i className="material-icons" style={{ color: "#64b5f6" }}>
+                favorite
+              </i>
+              */}
+                <h6
+                  style={{
+                    fontWeight: "bold"
+                  }}
+                >
+                  {item.title}
+                </h6>
+                <p>{item.body}</p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: "10px"
+                  }}
+                >
+                  {" "}
+                  {/* Likes displayer */}
+                  {item.likes.includes(state._id) ? (
+                    <i
+                      className="material-icons"
+                      // onClick={() => {
+                      //   unlikePost(item._id);
+                      // }}
+                      style={{
+                        color: "#64b5f6"
+                      }}
+                    >
+                      thumb_up
+                    </i>
+                  ) : (
+                    <i
+                      className="material-icons"
+                      // onClick={() => {
+                      //   likePost(item._id);
+                      // }}
+                    >
+                      thumb_up
+                    </i>
+                  )}
+                  <h6
+                    style={{
+                      margin: "0px 0px 0px 15px"
+                    }}
+                  >
+                    {item.likes.length} likes
+                  </h6>
+                </div>
+
+                {/* {item.comments.map(record => {
+                  return (
+                    <h6 key={record._id}>
+                      <span style={{ fontWeight: 500 }}>
+                        {record.postedBy.name}
+                      </span>{" "}
+                      {console.log(record.postedBy.name)}
+                      {record.text}
+                    </h6>
+                  );
+                })} */}
+              </div>
+            </div>
+          );
+        })}
     </>
   );
 };
