@@ -136,7 +136,12 @@ const Home = () => {
           width: "70%"
         }}
       >
-        {localStorage.getItem("type") == "admin" ? <CreatePost /> : <div />}
+        {localStorage.getItem("type") == "admin" ||
+        localStorage.getItem("type") == "moderator" ? (
+          <CreatePost />
+        ) : (
+          <div />
+        )}
 
         <h4 className="home-card">All posts</h4>
 
@@ -145,10 +150,15 @@ const Home = () => {
             <div className="card home-card" key={item._id}>
               <h5
                 style={{
-                  padding: "24px"
+                  padding: "24px",
+                  paddingBottom: 12,
+                  color: "#0078e2",
+                  fontWeight: "600",
+                  cursor: "pointer"
                 }}
               >
                 <Link
+                  style={{ color: "#0078e2", fontWeight: "600" }}
                   to={
                     item.postedBy._id !== state._id
                       ? "/profile/" + item.postedBy._id
@@ -161,7 +171,8 @@ const Home = () => {
                   <i
                     className="material-icons"
                     style={{
-                      float: "right"
+                      float: "right",
+                      color: "#000"
                     }}
                     onClick={() => deletePost(item._id)}
                   >
@@ -170,17 +181,9 @@ const Home = () => {
                 )}
               </h5>
 
-              <div className="card-image">
-                {item.photo != "" && item.photo != "No photo" ? (
-                  <img src={item.photo} />
-                ) : (
-                  <div style={{ marginTop: -20 }} />
-                )}
-              </div>
-
-              <div className="card-content">
+              <div className="card-content" style={{ paddingTop: 0 }}>
                 {/* 
-              <i className="material-icons" style={{ color: "#64b5f6" }}>
+              <i className="material-icons" style={{ color: "#0078e2" }}>
                 favorite
               </i>
               */}
@@ -192,6 +195,13 @@ const Home = () => {
                   {item.title}
                 </h6>
                 <p>{item.body}</p>
+                <div className="card-image">
+                  {item.photo != "" && item.photo != "No photo" ? (
+                    <img src={item.photo} />
+                  ) : (
+                    <div style={{ marginTop: 0 }} />
+                  )}
+                </div>
 
                 <div
                   style={{
@@ -209,7 +219,7 @@ const Home = () => {
                         unlikePost(item._id);
                       }}
                       style={{
-                        color: "#64b5f6"
+                        color: "#0078e2"
                       }}
                     >
                       thumb_up
@@ -236,7 +246,7 @@ const Home = () => {
                 {item.comments.map(record => {
                   return (
                     <h6 key={record._id}>
-                      <span style={{ fontWeight: 500 }}>
+                      <span style={{ fontWeight: 800 }}>
                         {record.postedBy.name}
                       </span>{" "}
                       {console.log(record.postedBy)}

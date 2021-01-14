@@ -8,6 +8,8 @@ import Signup from "./components/screens/Signup";
 import UserProfile from "./components/screens/UserProfile";
 import CreatePost from "./components/screens/CreatePost";
 import FollowingPost from "./components/screens/FollowingPost";
+import ReadPost from "./components/screens/ReadPost";
+import CreateAdmin from "./components/screens/CreateAdmin";
 import React, { useEffect, createContext, useReducer, useContext } from "react";
 import { reducer, initialState } from "./reducers/userReducer";
 
@@ -30,9 +32,17 @@ const Routing = () => {
   }, []);
 
   return (
-    <Switch style={{marginTop:"70px", paddingTop:"70px"}}>
-      <Route exact path="/" >
+    <Switch style={{ marginTop: "70px", paddingTop: "70px" }}>
+      <Route exact path="/">
         <Home />
+      </Route>
+
+      <Route path="/read-post">
+        <ReadPost />
+      </Route>
+
+      <Route path="/create-admin">
+        <CreateAdmin />
       </Route>
 
       <Route path="/signin">
@@ -68,9 +78,9 @@ function App() {
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
-        <NavBar/>
-        <div style={{paddingTop:"68px"}}>
-          <Routing/>
+        <NavBar />
+        <div style={{ paddingTop: "68px", height: "100%" }}>
+          <Routing />
         </div>
       </BrowserRouter>
     </UserContext.Provider>

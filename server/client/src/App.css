@@ -40,7 +40,7 @@
 }
 
 a {
-  color: black !important;
+  color: black;
 }
 
 /*LOGIN,OUT PAGE*/
@@ -55,14 +55,19 @@ a {
   margin: 10px auto;
 }
 
+input[type="text"]:focus {
+  border-bottom: 1px solid #0078e2 !important;
+  box-shadow: 0 1px 0 0 #0078e2 !important;
+}
+
 .input-field input[type="text"]:focus {
-  border-bottom: 1px solid #32cd32 !important;
-  box-shadow: 0 1px 0 0 #32cd32 !important;
+  border-bottom: 1px solid #0078e2 !important;
+  box-shadow: 0 1px 0 0 #0078e2 !important;
 }
 
 .input-field input[type="password"]:focus {
-  border-bottom: 1px solid #32cd32 !important;
-  box-shadow: 0 1px 0 0 #32cd32 !important;
+  border-bottom: 1px solid #0078e2 !important;
+  box-shadow: 0 1px 0 0 #0078e2 !important;
 }
 
 /*PROFILE PAGE*/
@@ -238,4 +243,10 @@ CSS .hvrbox,
 
 nav ul a {
   transition: background-color 0s;
+  color: #000;
 }
+
+/* h5 {
+  font-weight: 600;
+  color: #0078e2;
+} */

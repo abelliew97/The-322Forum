@@ -99,9 +99,12 @@ const NavBar = () => {
       //Not signed in, prompt signin/up
       return [
         <li key="6">
-          <Link to="/signin">Sign in</Link>
+          <Link to="/read-post">Posts</Link>
         </li>,
         <li key="7">
+          <Link to="/signin">Sign in</Link>
+        </li>,
+        <li key="8">
           <Link to="/signup">Sign up</Link>
         </li>
       ];
@@ -185,28 +188,31 @@ const NavBar = () => {
               marginRight: 20
             }}
           >
-            {userDetails.map(item => {
-              return (
-                <Link
-                  to={
-                    item._id !== state._id ? "/profile/" + item._id : "/profile"
-                  }
-                  onClick={() => {
-                    M.Modal.getInstance(searchModal.current).close();
-                    setSearch("");
-                  }}
-                >
-                  <p
-                    style={{
-                      background: "#FAFAFA"
+            {userDetails &&
+              userDetails.map(item => {
+                return (
+                  <Link
+                    to={
+                      item._id !== state._id
+                        ? "/profile/" + item._id
+                        : "/profile"
+                    }
+                    onClick={() => {
+                      M.Modal.getInstance(searchModal.current).close();
+                      setSearch("");
                     }}
-                    className="collection-item"
                   >
-                    {item.name}
-                  </p>
-                </Link>
-              );
-            })}
+                    <p
+                      style={{
+                        background: "#FAFAFA"
+                      }}
+                      className="collection-item"
+                    >
+                      {item.name}
+                    </p>
+                  </Link>
+                );
+              })}
           </ul>
         </div>
         <div className="modal-footer">

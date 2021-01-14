@@ -16,8 +16,10 @@ const Left = () => {
         padding: "10px",
         minWidth: "15%",
         display: "inline-list-item",
-        alignItems: "start",
-        verticalAlign: "center"
+        alignItems: "center",
+        verticalAlign: "center",
+        display: "flex",
+        flexDirection: "column"
       }}
     >
       <img
@@ -48,20 +50,31 @@ const Left = () => {
           ? JSON.parse(localStorage.getItem("user")).name
           : ""}
       </h6>
-
+      <span
+        style={{
+          backgroundColor: "#0078e2",
+          color: "#fff",
+          padding: "3px 10px",
+          borderRadius: 20,
+          marginBottom: 30
+        }}
+      >
+        {localStorage.getItem("type") ? localStorage.getItem("type") : ""}
+      </span>
       {/*Profile button */}
       <Link
         to="/profile"
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center"
+          alignItems: "center",
+          alignSelf: "flex-start"
         }}
       >
         <i
           className="material-icons"
           style={{
-            margin: "10px 20px"
+            margin: "12px 10px"
           }}
         >
           perm_identity
@@ -69,12 +82,36 @@ const Left = () => {
         <p>Profile</p>
       </Link>
 
+      {/*Create Admin button */}
+      {localStorage.getItem("type") == "moderator" && (
+        <Link
+          to="/create-admin"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "flex-start"
+          }}
+        >
+          <i
+            className="material-icons"
+            style={{
+              margin: "12px 10px"
+            }}
+          >
+            add
+          </i>
+          <p>Create Admins</p>
+        </Link>
+      )}
+
       {/*Logout button */}
       <div
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center"
+          alignItems: "center",
+          alignSelf: "flex-start"
         }}
         onClick={() => {
           localStorage.clear();
@@ -86,7 +123,7 @@ const Left = () => {
         <i
           className="material-icons"
           style={{
-            margin: "10px 20px"
+            margin: "12px 10px"
           }}
         >
           exit_to_app

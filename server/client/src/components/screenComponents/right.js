@@ -30,54 +30,60 @@ const Right = () => {
       >
         Followed
       </h6>
+      {console.log(following)}
 
-      {following.map((item, index) => {
-        //COloring
-        const colour = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      {following.indexOf("") == 0 ? (
+        <p>No Following Actions</p>
+      ) : (
+        following.map((item, index) => {
+          //COloring
+          const colour =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
 
-        return (
-          <Link
-            to={
-              localStorage.getItem("user")
-                ? "/profile/" +
-                  JSON.parse(localStorage.getItem("user")).following[index]
-                : ""
-            }
-            onClick={() => {}}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center"
-              }}
+          return (
+            <Link
+              to={
+                localStorage.getItem("user")
+                  ? "/profile/" +
+                    JSON.parse(localStorage.getItem("user")).following[index]
+                  : ""
+              }
+              onClick={() => {}}
             >
               <div
                 style={{
-                  minWidth: "40px",
-                  maxWidth: "40px",
-                  height: "40px",
-                  borderRadius: "20px",
-                  backgroundColor: colour,
                   display: "flex",
-                  alignItems: "center",
-                  margin: "5px 20px 5px 15px"
+                  flexDirection: "row",
+                  alignItems: "center"
                 }}
               >
-                <p
+                <div
                   style={{
-                    margin: "auto",
-                    fontWeight: "bolder"
+                    minWidth: "40px",
+                    maxWidth: "40px",
+                    height: "40px",
+                    borderRadius: "20px",
+                    backgroundColor: colour,
+                    display: "flex",
+                    alignItems: "center",
+                    margin: "5px 20px 5px 15px"
                   }}
                 >
-                  {item.substring(0, 2)}
-                </p>
+                  <p
+                    style={{
+                      margin: "auto",
+                      fontWeight: "bolder"
+                    }}
+                  >
+                    {item.substring(0, 2)}
+                  </p>
+                </div>
+                <p style={{ color: "#0078e2" }}>{item}</p>
               </div>
-              <p>{item}</p>
-            </div>
-          </Link>
-        );
-      })}
+            </Link>
+          );
+        })
+      )}
     </div>
   );
 };

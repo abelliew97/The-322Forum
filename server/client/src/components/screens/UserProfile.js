@@ -206,25 +206,21 @@ const UserProfile = () => {
       ) : (
         <h2>Loading...</h2>
       )}
-      {userProfile &&
+      {userProfile ? (
         userProfile.posts.map(item => {
           return (
             <div className="card home-card" key={item._id}>
               <h5
                 style={{
-                  padding: "24px"
+                  padding: "24px",
+                  paddingBottom: 12,
+                  color: "#0078e2",
+                  fontWeight: "600",
+                  cursor: "pointer"
                 }}
               >
-                {console.log(userProfile)}
-                {/* <Link
-                to={
-                  item.postedBy._id !== state._id
-                    ? "/profile/" + item.postedBy._id
-                    : "/profile"
-                }
-              > */}
                 {item.postedBy.name}
-                {/* </Link>{" "} */}
+
                 {item.postedBy._id == state._id && (
                   <i
                     className="material-icons"
@@ -238,20 +234,7 @@ const UserProfile = () => {
                 )}
               </h5>
 
-              <div className="card-image">
-                {item.photo != "" && item.photo != "No photo" ? (
-                  <img src={item.photo} />
-                ) : (
-                  <div style={{ marginTop: -20 }} />
-                )}
-              </div>
-
-              <div className="card-content">
-                {/* 
-              <i className="material-icons" style={{ color: "#64b5f6" }}>
-                favorite
-              </i>
-              */}
+              <div className="card-content" style={{ paddingTop: 0 }}>
                 <h6
                   style={{
                     fontWeight: "bold"
@@ -260,6 +243,14 @@ const UserProfile = () => {
                   {item.title}
                 </h6>
                 <p>{item.body}</p>
+
+                <div className="card-image">
+                  {item.photo != "" && item.photo != "No photo" ? (
+                    <img src={item.photo} />
+                  ) : (
+                    <div style={{ marginTop: 0 }} />
+                  )}
+                </div>
 
                 <div
                   style={{
@@ -277,7 +268,7 @@ const UserProfile = () => {
                       //   unlikePost(item._id);
                       // }}
                       style={{
-                        color: "#64b5f6"
+                        color: "#0078e2"
                       }}
                     >
                       thumb_up
@@ -304,7 +295,7 @@ const UserProfile = () => {
                 {/* {item.comments.map(record => {
                   return (
                     <h6 key={record._id}>
-                      <span style={{ fontWeight: 500 }}>
+                      <span style={{ fontWeight: "800" }}>
                         {record.postedBy.name}
                       </span>{" "}
                       {console.log(record.postedBy.name)}
@@ -315,7 +306,10 @@ const UserProfile = () => {
               </div>
             </div>
           );
-        })}
+        })
+      ) : (
+        <h4 style={{ textAlign: "center" }}>No Posts Posted</h4>
+      )}
     </>
   );
 };

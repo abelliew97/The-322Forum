@@ -20,7 +20,6 @@ router.post("/signin", (req, res) => {
     return res.status(422).send({ error: "Please complete the form" });
   }
 
-
   User.findOne({ email: email }).then(savedUser => {
     if (!savedUser) {
       return res.status(422).send({ error: "Invalid email or password" });
@@ -30,19 +29,34 @@ router.post("/signin", (req, res) => {
       .then(doMatch => {
         if (doMatch) {
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-          const { _id, name, email, followers, following, pic, _type, followingNames } = savedUser;
+          const {
+            _id,
+            name,
+            email,
+            followers,
+            following,
+            pic,
+            _type,
+            followingNames
+          } = savedUser;
 
           //Lower normalization for faster retrieval of names
-          
 
           res.json({
             token,
-            _type,
             followingNames,
-            user: { _id, name, email, followers, following, pic, followingNames }
-
+            _type,
+            user: {
+              _id,
+              name,
+              email,
+              followers,
+              following,
+              pic,
+              followingNames,
+              _type
+            }
           });
-          console.log(_type)
         } else {
           return res.status(422).send({ error: "Invalid email or password" });
         }
@@ -54,8 +68,8 @@ router.post("/signin", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { name, email, password, pic } = req.body;
-  const _type = "user"
+  const { name, email, password, pic, _type } = req.body;
+
   if (!email || !password || !name) {
     return res.status(422).send({ error: "Not Complete" });
   }
@@ -83,6 +97,5 @@ router.post("/signup", (req, res) => {
       });
   });
 });
-
 
 module.exports = router;
