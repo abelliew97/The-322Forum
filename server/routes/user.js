@@ -6,11 +6,12 @@ const Post = mongoose.model("Post");
 const User = mongoose.model("User");
 
 //select(-password) is to not send password to the frontend
-router.get("/user/:id", requireLogin, (req, res) => {
+router.get("/user/:id", requireLogin, async (req, res) => {
   User.findOne({ _id: req.params.id })
     .select("-password")
     .then(user => {
       Post.find({ postedBy: req.params.id })
+        .populate("comments.postedBy", "_id name")
         .populate("postedBy", "_id name")
         .exec((err, posts) => {
           if (err) {
@@ -30,7 +31,7 @@ router.put("/follow", requireLogin, (req, res) => {
   User.findByIdAndUpdate(
     req.body.followId,
     {
-      $push: { 
+      $push: {
         followers: req.user._id
       }
     },
@@ -44,9 +45,9 @@ router.put("/follow", requireLogin, (req, res) => {
       User.findByIdAndUpdate(
         req.user._id,
         {
-          $push: { 
+          $push: {
             following: req.body.followId,
-            followingNames: req.body.followName, 
+            followingNames: req.body.followName
           }
         },
         { new: true }
@@ -63,6 +64,7 @@ router.put("/follow", requireLogin, (req, res) => {
 });
 
 router.put("/unfollow", requireLogin, (req, res) => {
+  console.log("FUCK REACT >>> " + req.body.unfollowId + req.body.unfollowName);
   User.findByIdAndUpdate(
     req.body.unfollowId,
     {
@@ -78,12 +80,12 @@ router.put("/unfollow", requireLogin, (req, res) => {
       User.findByIdAndUpdate(
         req.user._id,
         {
-          $pull: { 
+          $pull: {
             following: req.body.unfollowId,
-            followingNames: req.body.unfollowName,
-          },
+            followingNames: req.body.unfollowName
+          }
         },
-        { new: true },
+        { new: true }
       )
         .select("-password")
         .then(result => {

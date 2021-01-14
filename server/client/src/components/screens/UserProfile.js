@@ -58,10 +58,10 @@ const UserProfile = () => {
         setShowFollow(false);
       });
 
-      localStorage.setItem(
-        "followingNames", 
-        localStorage.getItem("followingNames") + userProfile.user.name
-      )
+    localStorage.setItem(
+      "followingNames",
+      localStorage.getItem("followingNames") + userProfile.user.name
+    );
   };
 
   const unfollowUser = () => {
@@ -101,12 +101,18 @@ const UserProfile = () => {
 
     //Set local storage
     localStorage.setItem(
-      "followingNames", 
-      localStorage.getItem("followingNames").replace([userProfile.user.name+","], "")
-    )
-    
+      "followingNames",
+      localStorage
+        .getItem("followingNames")
+        .replace([userProfile.user.name + ","], "")
+    );
+
     //***********************MAY NEED TO REMOVE ID FROM USER OBJECT TOO IF NEEDED */
-    console.log(localStorage.getItem("followingNames").replace([userProfile.user.name+","], ""))
+    console.log(
+      localStorage
+        .getItem("followingNames")
+        .replace([userProfile.user.name + ","], "")
+    );
   };
 
   return (
@@ -169,35 +175,140 @@ const UserProfile = () => {
             </div>
           </div>
 
-          <div className="gallery">
+          {/* <div className="gallery">
             {userProfile.posts.map(item => {
-              return (
-                item.photo != "No photo"?
+              return item.photo != "No photo" ? (
                 <img
                   key={item._id}
                   className="item"
                   src={item.photo}
                   alt={item.title}
                   style={{
-                    maxWidth:"50%",
-                    margin:"10px 10px 10px 10px"
+                    width: "300px",
+                    margin: "10px 10px 10px 10px"
                   }}
-                /> :
-                <div style={{
-                  maxWidth:"50%",
-                  margin:"10px 10px 10px 10px",
-                  display:"flex",
-                  alignItems:"center",
-                }}>
+                />
+              ) : (
+                <div
+                  style={{
+                    maxWidth: "50%",
+                    margin: "10px 10px 10px 10px",
+                    display: "flex",
+                    alignItems: "center"
+                  }}
+                >
                   <p>{item.title}</p>
-
                 </div>
               );
             })}
-          </div>
+          </div> */}
         </div>
       ) : (
         <h2>Loading...</h2>
+      )}
+      {userProfile ? (
+        userProfile.posts.map(item => {
+          return (
+            <div className="card home-card" key={item._id}>
+              <h5
+                style={{
+                  padding: "24px",
+                  paddingBottom: 12,
+                  color: "#0078e2",
+                  fontWeight: "600",
+                  cursor: "pointer"
+                }}
+              >
+                {item.postedBy.name}
+
+                {item.postedBy._id == state._id && (
+                  <i
+                    className="material-icons"
+                    style={{
+                      float: "right"
+                    }}
+                    // onClick={() => deletePost(item._id)}
+                  >
+                    delete
+                  </i>
+                )}
+              </h5>
+
+              <div className="card-content" style={{ paddingTop: 0 }}>
+                <h6
+                  style={{
+                    fontWeight: "bold"
+                  }}
+                >
+                  {item.title}
+                </h6>
+                <p>{item.body}</p>
+
+                <div className="card-image">
+                  {item.photo != "" && item.photo != "No photo" ? (
+                    <img src={item.photo} />
+                  ) : (
+                    <div style={{ marginTop: 0 }} />
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: "10px"
+                  }}
+                >
+                  {" "}
+                  {/* Likes displayer */}
+                  {item.likes.includes(state._id) ? (
+                    <i
+                      className="material-icons"
+                      // onClick={() => {
+                      //   unlikePost(item._id);
+                      // }}
+                      style={{
+                        color: "#0078e2"
+                      }}
+                    >
+                      thumb_up
+                    </i>
+                  ) : (
+                    <i
+                      className="material-icons"
+                      // onClick={() => {
+                      //   likePost(item._id);
+                      // }}
+                    >
+                      thumb_up
+                    </i>
+                  )}
+                  <h6
+                    style={{
+                      margin: "0px 0px 0px 15px"
+                    }}
+                  >
+                    {item.likes.length} likes
+                  </h6>
+                </div>
+
+                {/* {item.comments.map(record => {
+                  return (
+                    <h6 key={record._id}>
+                      <span style={{ fontWeight: "800" }}>
+                        {record.postedBy.name}
+                      </span>{" "}
+                      {console.log(record.postedBy.name)}
+                      {record.text}
+                    </h6>
+                  );
+                })} */}
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <h4 style={{ textAlign: "center" }}>No Posts Posted</h4>
       )}
     </>
   );

@@ -16,6 +16,21 @@ router.get("/allpost", requireLogin, (req, res) => {
       console.log(err);
     });
 });
+
+router.get("/readallpost", (req, res) => {
+  console.log("readallpost");
+  Post.find()
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
+    .then(posts => {
+      res.json({ posts });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 router.get("/followingpost", requireLogin, (req, res) => {
   //if postedby in users following
   Post.find({ postedBy: { $in: req.user.following } })
@@ -65,6 +80,7 @@ router.get("/mypost", requireLogin, (req, res) => {
     postedBy: req.user._id
   })
     .populate("PostedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .then(mypost => {
       res.json({
         mypost
