@@ -63,7 +63,6 @@ router.put("/follow", requireLogin, (req, res) => {
 });
 
 router.put("/unfollow", requireLogin, (req, res) => {
-  console.log("FUCK REACT >>> "+ req.body.unfollowId + req.body.unfollowName)
   User.findByIdAndUpdate(
     req.body.unfollowId,
     {
