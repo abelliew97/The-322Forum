@@ -31,7 +31,7 @@ const CreatePost = () => {
           } else {
             //Success
             M.toast({ html: "Created post successfully!" });
-            window.reload();
+            window.location.reload();
           }
         })
         .catch(err => {
