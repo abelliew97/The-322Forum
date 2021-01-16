@@ -298,7 +298,7 @@ const UserProfile = () => {
                   </h6>
                 </div>
 
-                {/* {item.comments.map(record => {
+                {item.comments.map(record => {
                   return (
                     <h6 key={record._id}>
                       <span style={{ fontWeight: "800" }}>
@@ -308,7 +308,7 @@ const UserProfile = () => {
                       {record.text}
                     </h6>
                   );
-                })} */}
+                })}
               </div>
             </div>
           );

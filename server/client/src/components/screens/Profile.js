@@ -58,6 +58,23 @@ const Profile = () => {
     }
   }, [image]);
 
+  const deletePost = postid => {
+    fetch(`/deletepost/${postid}`, {
+      method: "delete",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt")
+      }
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+        const newData = data.filter(item => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
+
   const updatePhoto = file => {
     setImage(file);
   };
@@ -169,7 +186,7 @@ const Profile = () => {
       ) : (
         <h2>Loading....</h2>
       )}
-      {console.log(data.length)}
+      {console.log(data)}
 
       {data.length == 0 ? (
         <h4 style={{ textAlign: "center" }}>No Posts Posted</h4>
@@ -177,7 +194,7 @@ const Profile = () => {
         data.map(item => {
           return (
             <div className="card home-card" key={item._id}>
-              {/* <h5
+              <h5
                 style={{
                   padding: "24px",
                   paddingBottom: 12,
@@ -186,15 +203,8 @@ const Profile = () => {
                   cursor: "pointer"
                 }}
               >
-                {/* <Link
-                to={
-                  item.postedBy._id !== state._id
-                    ? "/profile/" + item.postedBy._id
-                    : "/profile"
-                }
-              > 
                 {item.postedBy.name}
-                {/* </Link>{" "} 
+
                 {item.postedBy._id == state._id && (
                   <i
                     className="material-icons"
@@ -202,12 +212,12 @@ const Profile = () => {
                       float: "right",
                       color: "#000"
                     }}
-                    // onClick={() => deletePost(item._id)}
+                    onClick={() => deletePost(item._id)}
                   >
                     delete
                   </i>
                 )}
-              </h5> */}
+              </h5>
 
               <div className="card-content" style={{ paddingTop: 12 }}>
                 {/* 
@@ -271,7 +281,7 @@ const Profile = () => {
                   </h6>
                 </div>
 
-                {/* {item.comments.map(record => {
+                {item.comments.map(record => {
                   return (
                     <h6 key={record._id}>
                       <span style={{ fontWeight: 800 }}>
@@ -281,7 +291,7 @@ const Profile = () => {
                       {record.text}
                     </h6>
                   );
-                })} */}
+                })}
               </div>
             </div>
           );

@@ -7,6 +7,7 @@ const NavBar = () => {
   const searchModal = useRef(null);
   const [search, setSearch] = useState("");
   const [userDetails, setUserDetails] = useState([]);
+  const [userDetailPerm, setUserDetailPerm] = useState(false);
   const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   useEffect(() => {
@@ -125,7 +126,14 @@ const NavBar = () => {
       .then(res => res.json())
       .then(results => {
         setUserDetails(results.user);
+        setUserDetailPerm(true);
       });
+  };
+
+  const closeModalSteps = () => {
+    setUserDetails([]);
+    setUserDetailPerm(false);
+    setSearch("");
   };
 
   return (
@@ -192,6 +200,7 @@ const NavBar = () => {
               userDetails.map(item => {
                 return (
                   <Link
+                    className="modal-close"
                     to={
                       item._id !== state._id
                         ? "/profile/" + item._id
@@ -200,6 +209,7 @@ const NavBar = () => {
                     onClick={() => {
                       M.Modal.getInstance(searchModal.current).close();
                       setSearch("");
+                      setUserDetails([]);
                     }}
                   >
                     <p
@@ -218,7 +228,7 @@ const NavBar = () => {
         <div className="modal-footer">
           <button
             className="modal-close waves-effect waves-green btn-flat"
-            onClick={() => setSearch("")}
+            onClick={() => closeModalSteps()}
           >
             close
           </button>
