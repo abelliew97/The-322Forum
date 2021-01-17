@@ -100,7 +100,7 @@ const NavBar = () => {
       //Not signed in, prompt signin/up
       return [
         <li key="6">
-          <Link to="/read-post">Posts</Link>
+          <Link to="/read-post">Guest</Link>
         </li>,
         <li key="7">
           <Link to="/signin">Sign in</Link>

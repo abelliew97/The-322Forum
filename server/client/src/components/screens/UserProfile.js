@@ -41,11 +41,11 @@ const UserProfile = () => {
           payload: { following: data.following, followers: data.followers }
         });
         localStorage.setItem("user", JSON.stringify(data));
-        dispatch({
-          type: "UPDATE",
-          payload: { following: data.following, followers: data.followers }
-        });
-        localStorage.setItem("user", JSON.stringify(data));
+        // dispatch({
+        //   type: "UPDATE",
+        //   payload: { following: data.following, followers: data.followers }
+        // });
+        // localStorage.setItem("user", JSON.stringify(data));
         setProfile(prevState => {
           return {
             ...prevState,
@@ -60,7 +60,7 @@ const UserProfile = () => {
 
     localStorage.setItem(
       "followingNames",
-      localStorage.getItem("followingNames") + userProfile.user.name
+      localStorage.getItem("followingNames") + "," + userProfile.user.name
     );
   };
 
@@ -104,8 +104,14 @@ const UserProfile = () => {
       "followingNames",
       localStorage
         .getItem("followingNames")
-        .replace([userProfile.user.name + ","], "")
+        .replace([userProfile.user.name ], "")
     );
+    localStorage.setItem(
+      "followingNames",
+      localStorage
+        .getItem("followingNames")
+        .replace(/,\s*$/, "")
+    )
 
     //***********************MAY NEED TO REMOVE ID FROM USER OBJECT TOO IF NEEDED */
     console.log(
