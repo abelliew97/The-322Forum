@@ -10,6 +10,7 @@ const UserProfile = () => {
     state ? !state.following.includes(userid) : true
   );
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetch(`/user/${userid}`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -17,7 +18,9 @@ const UserProfile = () => {
     })
       .then(res => res.json())
       .then(result => {
+        
         setProfile(result);
+        
       });
   }, []);
 
@@ -210,8 +213,8 @@ const UserProfile = () => {
           </div> */}
         </div>
       ) : (
-        <h2>Loading...</h2>
-      )}
+        <div/>
+      )} {/*Display nothing if not loaded*/}
       {userProfile ? (
         userProfile.posts.map(item => {
           return (
@@ -314,8 +317,31 @@ const UserProfile = () => {
           );
         })
       ) : (
-        <h4 style={{ textAlign: "center" }}>No Posts Posted</h4>
+        <div class="preloader-wrapper big active" style={{
+          width:"100%",
+          height:"100%",
+          alignItems:"center",
+          display: "flex",
+              justifyContent: "space-around",
+              margin: "18px 0px",
+        }}>
+        <div class="spinner-layer spinner-blue-only" style={{
+          width:"10%",
+          height:"10%",
+          alignSelf:"center"
+        }}>
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+      /* Loading screen above*/
       )}
+      
     </>
   );
 };

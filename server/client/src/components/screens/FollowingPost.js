@@ -8,7 +8,10 @@ import M from "materialize-css";
 const FollowingPost = () => {
   const [data, setData] = useState([]);
   const { state, dispatch } = useContext(UserContext);
+  const [isLoaded, setLoad] = useState(false)
+
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetch("/followingpost", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -18,6 +21,9 @@ const FollowingPost = () => {
       .then(result => {
         console.log(result);
         setData(result.posts);
+        setLoad(true)
+        
+        localStorage.setItem("filter", "followed")
       });
   }, []);
 
@@ -122,7 +128,9 @@ const FollowingPost = () => {
       });
   };
   return (
-    <div className="grid-container">
+    <>
+    {isLoaded? (
+      <div className="grid-container">
       <Left />
 
       <div
@@ -264,9 +272,37 @@ const FollowingPost = () => {
           );
         })}
       </div>
+      
 
       <Right />
     </div>
+    ):(
+      <div class="preloader-wrapper big active" style={{
+        width:"100%",
+        height:"100%",
+        alignItems:"center",
+        display: "flex",
+            justifyContent: "space-around",
+            margin: "18px 0px",
+      }}>
+      <div class="spinner-layer spinner-blue-only" style={{
+        width:"10%",
+        height:"10%",
+        alignSelf:"center"
+      }}>
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+    /* Loading screen above*/
+    )}
+
+    </>
   );
 };
 
