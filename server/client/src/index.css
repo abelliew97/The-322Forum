@@ -23,3 +23,10 @@ html {
   font-weight: 600;
   color: #0078e2;
 } */
+
+h6 {
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}
